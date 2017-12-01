@@ -1,24 +1,90 @@
+//
+//  main.cpp
+//  od
+//
+//  Created by Денис Скоробогатов on 01.12.17.
+//  Copyright © 2017 Denis Skorobogatov. All rights reserved.
+//
+
 #include <iostream>
+#include <sstream>
 #include <vector>
 
 using namespace std;
+
 string readLine();
 void printInfo();
+vector<int> readNumbers();
+int multiply(vector<int>);
+vector<int> del(vector<int>);
+
 const int MAXINPUT = 256;
 
 
 int main()
 {
     string input;
-    printInfo();
-    input = readLine();
-    if (input == "insert")
+    vector<int> array;
+    while(true)
     {
-
+        printInfo();
+        input = readLine();
+        if (input == "insert")
+        {
+            array = readNumbers();
+        }
+        if (input == "print")
+        {
+            for (int i = 0; i < array.size(); i++)
+                cout << array[i] << " ";
+            cout << endl;
+        }
+        if (input == "multiply")
+        {
+            cout << multiply(array) << endl;
+        }
+        if (input == "delete")
+        {
+            try {
+                array = del(array);
+            } catch (...) {
+                cout << "No data in an array" << endl;
+                continue;
+            }
+        }
+        if (input == "exit")
+            break;
     }
     return 0;
 }
 
+int multiply(vector<int> array)
+{
+    int result = 1;
+    bool nbz = false;
+    for(int i = 0; i < array.size(); i++)
+    {
+        if (array[i] < 0)
+        {
+            result *= array[i];
+            nbz = true;
+        }
+    }
+    return nbz ? result : 0;
+}
+
+vector<int> del(vector<int> array)
+{
+    int max = array[0];
+    vector<int> positions;
+    for (int i = 0; i < array.size(); i++)
+    {
+        if (array[i] > max)
+            max = array[i];
+    }
+    array.erase(remove(array.begin(), array.end(), max), array.end());
+    return array;
+}
 
 void printInfo()
 {
@@ -61,3 +127,4 @@ vector<int> readNumbers()
     }
     return myNumbers;
 }
+
